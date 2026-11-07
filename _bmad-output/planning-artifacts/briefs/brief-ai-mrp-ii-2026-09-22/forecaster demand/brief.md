@@ -1,64 +1,61 @@
----
+﻿---
 title: "Product Brief: AI-supported MRP II – Forecasting and Demand Management"
 status: draft
 created: 2026-09-22
-updated: 2026-09-22
+updated: 2026-11-07
 ---
 
 # Product Brief: AI-supported MRP II
 
 ## Executive summary
 
-The product will use AI to support production planning, from demand forecasting to material requirements and detailed production scheduling. The first release is **module 4.1: Forecasting and Demand Management**, selected by the user as the MVP. It will turn historical sales and relevant market signals into understandable forecasts that a planner can review, adjust, and approve.
+A web-based student prototype will help a demand planner import weekly sales, review data quality, compare forecasts, explore scenarios, and approve and export a demand plan. The first release covers **module 4.1: Forecasting and Demand Management** for one fictional manufacturing company. MRP II remains the long-term vision; other planning modules are outside v1.
 
-The project has a high level of difficulty and a clear educational purpose: students will understand how data flows between planning modules and investigate when AI improves decision support. MRP II is the long-term product vision. The bill of materials (BOM) and other production modules are planned for future development.
+This revision applies the instructor feedback dated 2026-10-06. V1 uses synthetic data for five products over 104 weeks, a 12-week forecast horizon, a seasonal naive baseline, one regression candidate, and one authenticated planner role. These are planning decisions for the prototype, not claims about an implemented app or validated customer needs. The project plan sets the delivery deadline at **2026-12-01**.
 
-**[ASSUMPTION]** The first version is a web-based student prototype for a single manufacturing company, demonstrated using synthetic or anonymized data. The industry, company, and dataset have not yet been selected.
+## Problem and primary user
 
-## Problem and target users
+The primary user is a production or demand planner who needs an understandable basis for weekly demand decisions. For example, a fictional manufacturer of seasonal outdoor products risks shortages if it plans a summer peak using winter sales; an excessive forecast can instead leave unsold stock. The prototype lets the planner inspect seasonality, compare measured errors, and explain adjustments before approving demand.
 
-A production planner must balance expected demand against uncertainty. Incorrect estimates can lead to excess inventory or shortages. **[ASSUMPTION]** The target users currently combine sales, orders, and campaign information manually, with limited support for comparing forecasting methods and explaining adjustments. This problem statement needs validation with a prospective user.
-
-The primary user is a production or demand planner who needs a traceable basis for decisions by product and period. A sales manager contributes customer orders and market knowledge. Students and the course instructor use the solution to demonstrate, test, and assess data quality, forecasts, and the contribution of AI. **[ASSUMPTION]** These roles represent the initial user environment.
+**[ASSUMPTION]** This example represents a useful real planning problem; it still needs validation with a prospective planner. Students and the instructor evaluate the prototype, but are not additional product roles. Sales managers and other contributors are outside v1.
 
 ## Solution and user experience
 
-The planner imports data, receives visible warnings about missing data and anomalies, and selects a product and planning period. The solution compares a simple baseline forecast with an AI-based candidate and displays historical data, expected demand, and forecast errors. The planner explores normal, optimistic, and pessimistic scenarios, considers a safety margin, and saves an approved demand plan with reasons for any overrides.
+The planner logs in, imports a sales CSV, and reviews errors and warnings with product, week, and row references. Missing values are distinguished from zero sales. Corrections require an explanation and preserve the original import; suspicious values are flagged rather than silently removed.
 
-AI will support method selection and anomaly identification. Calculated results must be verifiable, and recommendations must be linked to data and measured performance. The user retains control over the method, outlier treatment, and safety margin. An optional language model for explanations is an extension, not a prerequisite for forecast calculation.
+The main workspace provides a product selector, a chart of history and both 12-week forecasts, a per-product MAE comparison, and visible data-quality markers. A linked scenario panel and table show normal, optimistic, and pessimistic quantities and the exact adjustments. The planner chooses a method, reviews changes, approves a saved plan, and exports it as CSV.
 
-The project's value is a clear learning and decision-making workflow with traceability from source data to the approved plan. There is no evidence yet of a competitive advantage or that AI will produce better forecasts on the selected dataset.
+The **seasonal naive baseline** repeats sales from the corresponding week 52 weeks earlier. The **AI/ML candidate** is a scikit-learn linear regression using a time trend and annual sine/cosine seasonality features. It is a deliberately small, inspectable model, not an automatic method-selection system. Both run locally. V1 uses no language model, paid API, or AI-based anomaly detector; validation uses explicit rules. Better ML accuracy is an evaluation question, not a promise.
 
-## MVP: module 4.1
+## First-release scope
 
-| Area | First-release scope |
+| Area | V1 commitment |
 |---|---|
-| Inputs | Historical sales and customer orders. Seasonality/trends, campaigns, market data, and sales forecasts are included when suitable data is available; missing inputs must be visible. |
-| Data quality | Checks for required fields, periods, duplicates, missing values, and outliers. Corrections must be traceable. |
-| Forecasts | Demand forecasts by product and period, comparing a simple baseline model with an AI-based candidate. |
-| Scenarios | Normal, optimistic, and pessimistic demand, with visible assumptions. High and low demand are explicitly defined. |
-| Decisions | Selection of forecasting method, safety margin, and outlier treatment; manual changes with explanations. |
-| Outputs | A versioned demand plan and scenarios that can be exported for subsequent master production scheduling. |
-| Access | Authentication and access control for business-critical and potentially competitively sensitive data. |
+| Data | CSV sales history only: product ID, week start, quantity sold, unit. Five synthetic products, 104 weekly observations per product, and a 12-week forecast horizon. |
+| Data quality | Validate fields, weekly coverage, duplicates, missing values, negative quantities, and rule-based outlier warnings. Preserve zero sales. Unresolved blocking errors prevent forecasting. |
+| Forecasts | Seasonal naive baseline and the fixed regression candidate; history, forecasts, and MAE displayed per product. No automatic tuning or method selection. |
+| Scenarios | Normal = selected forecast; optimistic = normal × 1.10; pessimistic = normal × 0.90. Display these as editable planning assumptions, not confidence intervals. |
+| Decisions | Select method and scenario; optionally apply a separately displayed percentage safety margin, default 0%, and explained quantity overrides. Quantities cannot be negative. Safety-stock calculation is outside v1. |
+| Approval and export | Save an immutable approval snapshot linking the imported data and corrections, method, scenario, margin, overrides, approver, and timestamp. Export product, week, unit, scenario, and approved quantity. Full edit-history tracking is deferred. |
+| Access | Login and one planner role, enforced on the server for data, forecast, approval, and export operations. Include a local demonstration account; no role-management interface. |
 
-**[ASSUMPTION]** The MVP uses CSV import and export, weekly periods, and a 12-week forecast horizon. Scope will be adjusted to the available data before implementation. Detailed module information is available in [addendum.md](../addendum.md).
+The chosen development direction is a Python web application with Streamlit, scikit-learn for the regression candidate, and SQLite for local persistence. This keeps the data workflow and forecasting in one language. Forecasting, validation, and evaluation must be separate from the UI and independently testable. Authentication details and dependency versions belong in architecture work. Example data and a local setup guide must allow assessment without personal keys or paid accounts.
 
-The MVP excludes BOM editing, material requirements calculation, inventory management, capacity planning, detailed production scheduling, a finance module, and integration with ERP systems or supplier portals. Direct online purchasing and selling are outside the core module.
+Dataset construction, evaluation windows, and calculation rules are specified in [addendum.md](../addendum.md). The dataset and app are planned deliverables; this brief does not claim they already exist.
 
 ## Success criteria
 
-The following are proposed criteria **[ASSUMPTION]**, to be refined in the product requirements document (PRD):
+- A planner completes login, import, anomaly review, forecast comparison, scenario adjustment, approval, and export using the supplied demonstration data without code changes.
+- A reproducible generator produces five products × 104 weeks with documented trend, 52-week seasonality, and a fixed random seed. A clean reference and an intentionally corrupted import fixture expose known missing values, outliers, and invalid rows. Tests check known data defects and hand-calculated baseline/MAE examples. The generating process is known; future random demand is not perfectly predictable.
+- Both methods use the same historical 12-week evaluation windows and available observations. Training and any missing-value treatment use only information available at each forecast origin. MAE is shown per product, with results reported even when the regression performs worse. See the local evaluation protocol in the addendum.
+- Every exported plan matches its approved snapshot and can be traced to source data, corrections, method, scenario assumptions, margin, overrides, and approver. A new approval creates a new snapshot rather than replacing a prior approval.
+- Tests show that unauthenticated users cannot read data, run forecasts, change plans, approve, or export, including direct server requests. No read-only or administrator role is required in v1.
+- An assessor can follow README instructions to run locally, load the bundled data, use the demonstration account, and reproduce the comparison without paid services. A peer or prospective planner tries the core workflow and confusing steps are recorded for improvement.
 
-- A planner can complete data import, anomaly review, forecast comparison, scenario analysis, and approval in a single demonstration without code changes.
-- The AI candidate and baseline model are evaluated on the same historical test periods and forecast horizon, using mean absolute error (MAE) per product. No future observations are used for training or method selection. Results are reported even if AI performs no better. This follows the principles of [time series evaluation](https://otexts.com/fpp3/tscv.html) and [forecast accuracy evaluation](https://otexts.com/fpp3/accuracy.html).
-- Every approved plan can be traced to its data version, method, scenario assumptions, manual changes, and approver.
-- An access test shows that an unauthenticated user cannot read or export data, and that a read-only user cannot change or approve plans.
-- Students can explain how exported demand will later feed into master production scheduling and material requirements planning using the BOM, inventory, and lead times.
+## Boundaries, risks, and next steps
 
-## Future vision, risks, and open questions
+Customer orders, campaign and market signals, additional roles, full change-history tracking, additional models, and optional language-model explanations are later extensions. BOM editing, MPS, MRP, inventory management, capacity planning, detailed scheduling, finance, ERP/supplier integrations, and purchasing/selling are outside v1. Exported demand may feed future MPS and MRP modules; this prototype does not calculate material or capacity requirements.
 
-The next stages are master production scheduling (MPS), BOM and material requirements planning (MRP), followed by capacity planning and detailed production scheduling. MRP calculates material requirements using inputs such as the production schedule, BOM, and inventory; MRP II extends this relationship to additional manufacturing and business functions. Capacity must be assessed separately. See [SAP's explanation of MRP and MRP II](https://www.sap.com/resources/what-is-material-resource-planning-mrp).
+The main risks are scope exceeding the remaining time, leakage of future data into evaluation, and synthetic results being mistaken for real-world evidence. Mitigations are the bounded core workflow, fixed temporal tests, human approval, and clearly labelled demonstration data. Synthetic raw data can be version controlled in `data/synthetic/`; secrets and any future sensitive business data must stay outside version control and public logs.
 
-The main risks are insufficient historical data, misleading forecasts, exposure of sensitive data, and scope exceeding the student team's capacity. Mitigations include a bounded MVP, visible data gaps, evaluation against a baseline model, human approval, and access control.
-
-Before creating the PRD, the team must clarify the industry and user, available dataset and usage rights, project timeframe, number of products, time granularity and history length, and the AI contribution to implement. Selecting an external AI service also requires clarification of which data may be shared externally. This brief is a complete first draft; marked assumptions are not confirmed requirements.
+Next, create the dataset fixtures and PRD from these commitments, confirm that the regression candidate satisfies the course's AI expectations, and validate the workflow with a prospective planner. The named real company and external dataset are no longer prerequisites. The [project plan](prosjektplan.md) reflects this scope reduction and starts with a check of actual implementation status and remaining capacity. The revised brief governs v1 scope.
