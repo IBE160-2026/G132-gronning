@@ -4,6 +4,9 @@ Gruppeprosjekt i **IBE160 Programmering med KI** ved Høgskolen i Molde, høsten
 
 Repoet inneholder gruppens applikasjon og dokumentasjon av utvikling, testing og kvalitetssikring med KI.
 
+Se [endringsoversikten](ENDRINGSLOGG.md) for historikk fra prosjektstart,
+commit-lenker, berørte filer og hjelp til å finne endringer ved feil.
+
 ## Medlemmer
 
 - Vilde Gronning
