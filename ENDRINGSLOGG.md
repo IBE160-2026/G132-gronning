@@ -691,3 +691,7 @@ git log --oneline b8cea5b..HEAD
 ```
 
 Utfyllende begrunnelser og arbeidsøkter finnes i .logs/vsalte/; gjenstående arbeid finnes i .logs/vsalte/issues.md. Implementasjonsspesifikasjoner og reviewnotater finnes i _bmad-output/implementation-artifacts/.
+
+## Designprototype med fargetema
+
+`outputs/designforslag/samlet-oversikt.html` viser et samlet, interaktivt designforslag med illustrative tall. Fargetema kan settes til lyst, mørkt eller systemets valg, og huskes lokalt i nettleseren når lokal lagring er tilgjengelig. Dette er en selvstendig prototype, ikke en endring av Streamlit-appen. Finn commit med `git log --oneline -- outputs/designforslag/samlet-oversikt.html`.
