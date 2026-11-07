@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Prosjektplan – Forecasting and Demand Management"
 status: draft
 created: 2026-09-23
@@ -23,9 +23,9 @@ Kun etterspørselsstyring inngår. EOQ, MRP, lagerstyring, kapasitet og detaljpl
 
 - Syntetiske data: fem friluftsprodukter, 104 uker hver; generator, manifest og testfil med kjente feil.
 - Streamlit med produktvelger, historikkgraf, tabell og totalsum.
-- CSV-opplasting med formatkontroll, radfeil, duplikater, interne ukehull og avviksvarsler. Opplasting lagres ikke permanent.
+- CSV-opplasting med formatkontroll, radfeil, duplikater, interne ukehull og avviksvarsler. Gyldig opplasting kan nå lagres eksplisitt i SQLite med uforanderlige versjoner og begrunnede mengderettelser.
 - SCM200-prognoser med graf og fremtidstabell, historisk MAE og separat holdout er implementert i denne leveransen.
-- Innlogging, permanent datalagring, begrunnede rettelser, scenarioer, godkjenning og eksport gjenstår. Dette er planlagte funksjoner, ikke fullført arbeid.
+- Scenarioer, sikkerhetsmargin, permanent datalagring og begrunnede mengderettelser er implementert. Innlogging, godkjenning og planeksport gjenstår. Dette er planlagte funksjoner, ikke fullført arbeid.
 
 ## Prioritert arbeidsplan
 
@@ -54,4 +54,4 @@ Uke 51 skal brukes til testing og feilretting fremfor nye funksjoner. Lagre oppg
 
 ## Neste utviklingsoppgave
 
-Bygg scenarioer på de viste punktprognosene, og avklar rekkefølgen på permanent import, innlogging og godkjenningslagring. Før ukentlig status med utført arbeid, testbevis, faktisk tidsbruk, gjenstående timer og risiko mot uke 51.
+Bygg innlogging og sporbar godkjenning av planer, og koble deretter eksport til godkjenningslagringen. Før ukentlig status med utført arbeid, testbevis, faktisk tidsbruk, gjenstående timer og risiko mot uke 51.

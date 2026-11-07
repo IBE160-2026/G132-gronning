@@ -27,6 +27,7 @@ __pycache__/
 .tox/
 .nox/
 .ipynb_checkpoints/
+data/local/
 pip-wheel-metadata/
 
 # Tests / coverage

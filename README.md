@@ -35,8 +35,27 @@ CSV-opplasting krever UTF-8, komma og kolonnene i denne rekkefølgen:
 og enhet `units`. Duplikater og manglende uker mellom første og siste registrering
 per produkt avvises. Manglende verdi er forskjellig fra nullsalg.
 Uvanlig høye verdier gir varsel uten automatisk endring. Rett feil i originalfilen
-og last opp på nytt; ingen automatisk retting eller permanent import utføres.
-Fjerner du opplastingen, vises eksempeldataene igjen.
+og last opp på nytt. Ingen automatisk retting utføres.
+
+## Lokal lagring og rettelser
+
+Åpne «Lagre, åpne og rette datasett» og trykk «Lagre datasettet» for å lagre
+gyldig CSV eller eksempeldata. Originalfilen bevares byte for byte med UUID og
+tidspunkt. Velg en lagret versjon og «Åpne valgt versjon» for å bruke den igjen,
+også etter at appen er startet på nytt. Opplastet fil har forrang til den fjernes.
+«Vis eksempeldata» går tilbake til demo når opplastingen er fjernet.
+
+På en lagret versjon kan du velge produkt og uke, angi ny heltallsmengde og
+begrunnelse, og lagre rettelsen som en ny versjon. Historikken viser forelder,
+gammel/ny mengde, begrunnelse og tidspunkt i UTC. Tidligere versjoner og originalen
+overskrives ikke av appen. Originalen kan åpnes og lastes ned fra versjonslisten.
+Feil i CSV-struktur eller manglende uker må fortsatt rettes før import.
+
+Databasen ligger i `data/local/datasets.sqlite3` og er ignorert av Git. For en
+annen lokal plassering kan `FORECAST_DB_PATH` settes før oppstart. Ta sikkerhetskopi
+av databasefilen når appen er stoppet. Filer synkroniseres ikke gjennom GitHub.
+Dette er lokal lagring uten innlogging; ikke publiser appen med sensitive data
+før tilgangsstyring er implementert. Lagring av godkjente planer er et senere trinn.
 
 ## Prognoser og faglig grunnlag
 

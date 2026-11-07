@@ -42,7 +42,7 @@ At the user's direction, these classical statistical methods replace the regress
 
 The chosen development direction is a Python web application with Streamlit, pandas and SQLite for local persistence. This keeps the data workflow and forecasting in one language. Forecasting, validation, and evaluation must be separate from the UI and independently testable. Authentication details and dependency versions belong in architecture work. Example data and a local setup guide must allow assessment without personal keys or paid accounts.
 
-Dataset construction, evaluation windows, and calculation rules are specified in [addendum.md](../addendum.md). Synthetic data, sales views, CSV validation and forecasting are implemented; authentication, permanent imports, scenarios and approval/export still remain. Tests document the implemented behavior.
+Dataset construction, evaluation windows, and calculation rules are specified in [addendum.md](../addendum.md). Synthetic data, sales views, CSV validation and forecasting are implemented; scenarios, local permanent imports and explained quantity corrections are also implemented; authentication and approval/export still remain. Tests document the implemented behavior.
 
 ## Success criteria
 

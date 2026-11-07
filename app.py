@@ -1,12 +1,15 @@
 """Startside for prognoseprototypen."""
 
 from pathlib import Path
+import os
+import sqlite3
 
 import pandas as pd
 import streamlit as st
 from sales_data import validate_csv
 from forecasting import forecast, evaluate
 from scenarios import calculate_scenarios
+from storage import DatasetStore
 
 st.set_page_config(page_title="Friluft – etterspørselsplanlegging", page_icon="🏕️")
 
@@ -22,9 +25,17 @@ except (OSError, ValueError, pd.errors.ParserError) as error:
     st.stop()
 
 product_names = products.set_index("product_id")["product_name"].to_dict()
+try:
+    store = DatasetStore(os.environ.get("FORECAST_DB_PATH", str(data_directory.parent / "local" / "datasets.sqlite3")))
+except (OSError, sqlite3.Error):
+    st.error("Kunne ikke åpne lokal database. Kontroller skrivetilgang til data/local/.")
+    st.stop()
 uploaded = st.file_uploader("Last opp salgshistorikk (CSV)", type=["csv"])
 st.caption("UTF-8, komma, kolonner: product_id,week_start,quantity_sold,unit. Ukestart mandag; unit = units. Nullsalg skrives 0.")
 if uploaded is not None:
+    source_bytes = uploaded.getvalue()
+    source_name = uploaded.name
+    active_id = None
     sales, errors, warnings = validate_csv(uploaded.getvalue())
     for warning in warnings:
         st.warning(warning)
@@ -33,14 +44,77 @@ if uploaded is not None:
         for error in errors:
             st.error(error)
         st.stop()
-    st.success("CSV er kontrollert og vises nedenfor. Filen er ikke lagret permanent.")
+    st.success("CSV er kontrollert. Trykk «Lagre datasettet» nedenfor for permanent lagring. Opplasting overstyrer valgt lagret versjon til filen fjernes.")
     product_names = {pid: product_names.get(pid, pid) for pid in sales.product_id.unique()}
 else:
-    st.caption("Viser medfølgende syntetiske eksempeldata.")
+    active_id = st.session_state.get("active_dataset_id")
+    if active_id:
+        try:
+            active = store.get(active_id)
+            source_bytes, source_name = active['csv'], active['name']
+            sales, errors, warnings = validate_csv(source_bytes)
+            if errors:
+                raise ValueError("Lagret datasett har valideringsfeil.")
+            for warning in warnings:
+                st.warning(warning)
+            product_names = {pid: product_names.get(pid, pid) for pid in sales.product_id.unique()}
+            st.caption(f"Viser lagret versjon {active_id} · {source_name}")
+        except (ValueError, sqlite3.Error):
+            st.error("Kunne ikke åpne valgt datasett. Velg eksempeldata på nytt.")
+            if st.button("Bruk eksempeldata"):
+                st.session_state.pop("active_dataset_id", None)
+                st.rerun()
+            st.stop()
+    else:
+        source_bytes = (data_directory / "sales_history_clean.csv").read_bytes()
+        source_name = "Syntetiske eksempeldata"
+        st.caption("Viser medfølgende syntetiske eksempeldata.")
 selected_product = st.selectbox(
     "Velg produkt", options=list(product_names), format_func=product_names.get
 )
 history = sales.loc[sales["product_id"] == selected_product].sort_values("week_start")
+
+with st.expander("Lagre, åpne og rette datasett"):
+    st.caption("Lokal lagring på denne maskinen. Ingen innlogging ennå. Originalfil og tidligere versjoner beholdes; rettelser gjelder mengde på eksisterende produktuker. Strukturelle importfeil må rettes i CSV før lagring.")
+    try:
+        if active_id is None and st.button("Lagre datasettet"):
+            saved_id = store.save_original(source_bytes, source_name)
+            st.session_state["active_dataset_id"] = saved_id
+            st.success(f"Lagret med ID {saved_id}. Fjern eventuell opplasting for å åpne lagret versjon.")
+            if uploaded is None:
+                st.rerun()
+        versions = store.list_versions()
+        if versions:
+            version_names = {v['id']: f"{v['name']} · {v['created_at']} · {v['id']}" for v in versions}
+            chosen = st.selectbox("Lagrede versjoner", list(version_names), format_func=version_names.get, key="saved_version")
+            if st.button("Åpne valgt versjon"):
+                st.session_state["active_dataset_id"] = chosen
+                if uploaded is not None:
+                    st.info("Fjern opplastet fil for å vise valgt lagret versjon.")
+                else:
+                    st.rerun()
+        if st.button("Vis eksempeldata"):
+            st.session_state.pop("active_dataset_id", None)
+            if uploaded is not None:
+                st.info("Fjern opplastet fil for å vise eksempeldata.")
+            else:
+                st.rerun()
+        if active_id:
+            st.download_button("Last ned denne versjonens CSV", source_bytes, file_name=f"dataset-{active_id}.csv", mime="text/csv")
+            week = st.selectbox("Produktuke som skal rettes", history.week_start.dt.strftime('%Y-%m-%d').tolist(), key=f"correction_week_{active_id}_{selected_product}")
+            old_quantity = int(history.loc[history.week_start.dt.strftime('%Y-%m-%d') == week, 'quantity_sold'].iloc[0])
+            with st.form(f"correction_{active_id}_{selected_product}_{week}"):
+                quantity = st.number_input("Ny mengde (stykk)", min_value=0, max_value=1_000_000_000, value=old_quantity, step=1)
+                reason = st.text_input("Begrunnelse for rettelsen")
+                if st.form_submit_button("Lagre rettelse som ny versjon"):
+                    corrected_id = store.correct_quantity(active_id, selected_product, week, quantity, reason)
+                    st.session_state["active_dataset_id"] = corrected_id
+                    st.rerun()
+        if versions:
+            st.write("Versjonshistorikk (tidspunkt i UTC)")
+            st.json(versions, expanded=False)
+    except (ValueError, sqlite3.Error, OSError) as error:
+        st.error(f"Lagring mislyktes: {error}")
 
 st.subheader("Salgshistorikk")
 st.caption("Salgstall per uke. Mengder er oppgitt i stykk.")

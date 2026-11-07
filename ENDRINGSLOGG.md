@@ -670,6 +670,18 @@ git log viser filhistorikk; git show viser en endring eller gammel fil; git diff
 
 ## Vedlikehold videre
 
+### Nytt arbeid etter historikkgrensen: SQLite-datasett
+
+- `storage.py`: lokal SQLite, uforanderlige datasett-ID-er, eksakte originalbytes,
+  mengderettelser med forelder, gammel/ny verdi, begrunnelse og UTC-tidspunkt.
+- `app.py`: lagre og åpne versjon, returnere til demo, vise historikk og rette
+  eksisterende produktuke. Opplasting har forrang til filen fjernes.
+- `tests/test_storage.py`: gjenåpning, originalbevaring, kjede av rettelser,
+  atomisk avvisning og UI-test gjennom ny appøkt. Alle 16 tester bestod, inkludert opplastede originalbytes og opplastingsforrang.
+- `.gitignore` utelater `data/local/`; README dokumenterer lokal lagring og backup.
+- Finn den eksakte commiten med `git log --oneline -- storage.py`.
+- Ingen innlogging eller lagring av godkjente planer i denne endringen.
+
 Ved hver ferdig funksjonsendring: legg til commit-lenke, dato, formål, berørte filer, kontrollresultat og eventuelle kjente begrensninger. Bruk git log og git show som grunnlag; ikke før planlagt funksjonalitet som implementert. Nye logg- og pushcommits kan samles under en dokumentasjonsoppføring, men behold commitreferansene.
 
 Denne oversikten kan ikke inneholde hashen til sin egen commit før den er opprettet. For endringer etter avgrensningen ovenfor, inkludert opprettelsen av denne filen, bruk:
