@@ -1,0 +1,128 @@
+{
+  "data_type": "synthetic_not_observed_sales",
+  "seed": 132,
+  "weeks_per_product": 104,
+  "seasonal_period_weeks": 52,
+  "formula": "max(0, floor(base + trend*i + amplitude*cos(2*pi*((i+1)-peak)/52) + Gaussian(0,noise_sd) + 0.5))",
+  "products": [
+    {
+      "product_id": "P01",
+      "product_name": "Telt, 2 personer",
+      "base_units": 24,
+      "trend_units_per_week": 0.08,
+      "seasonal_amplitude": 15,
+      "peak_week_in_cycle": 25,
+      "noise_sd": 3
+    },
+    {
+      "product_id": "P02",
+      "product_name": "Sovepose, 3 sesonger",
+      "base_units": 35,
+      "trend_units_per_week": 0.1,
+      "seasonal_amplitude": 18,
+      "peak_week_in_cycle": 24,
+      "noise_sd": 4
+    },
+    {
+      "product_id": "P03",
+      "product_name": "Tursekk, 45 liter",
+      "base_units": 42,
+      "trend_units_per_week": 0.12,
+      "seasonal_amplitude": 16,
+      "peak_week_in_cycle": 23,
+      "noise_sd": 5
+    },
+    {
+      "product_id": "P04",
+      "product_name": "Liggeunderlag, oppblaasbart",
+      "base_units": 30,
+      "trend_units_per_week": 0.09,
+      "seasonal_amplitude": 17,
+      "peak_week_in_cycle": 26,
+      "noise_sd": 4
+    },
+    {
+      "product_id": "P05",
+      "product_name": "Hodelykt, LED",
+      "base_units": 48,
+      "trend_units_per_week": 0.06,
+      "seasonal_amplitude": 22,
+      "peak_week_in_cycle": 47,
+      "noise_sd": 6
+    }
+  ],
+  "validation_cases": [
+    {
+      "kind": "missing_quantity",
+      "original": {
+        "product_id": "P01",
+        "week_start": "2024-03-11",
+        "quantity_sold": 23,
+        "unit": "units"
+      },
+      "changed_field": "quantity_sold",
+      "changed_value": ""
+    },
+    {
+      "kind": "negative_quantity",
+      "original": {
+        "product_id": "P02",
+        "week_start": "2024-08-05",
+        "quantity_sold": 51,
+        "unit": "units"
+      },
+      "changed_field": "quantity_sold",
+      "changed_value": -5
+    },
+    {
+      "kind": "outlier",
+      "original": {
+        "product_id": "P03",
+        "week_start": "2024-08-12",
+        "quantity_sold": 58,
+        "unit": "units"
+      },
+      "changed_field": "quantity_sold",
+      "changed_value": 600
+    },
+    {
+      "kind": "invalid_date",
+      "original": {
+        "product_id": "P04",
+        "week_start": "2024-08-19",
+        "quantity_sold": 43,
+        "unit": "units"
+      },
+      "changed_field": "week_start",
+      "changed_value": "2024-02-30"
+    },
+    {
+      "kind": "missing_week",
+      "original": {
+        "product_id": "P05",
+        "week_start": "2024-04-08",
+        "quantity_sold": 41,
+        "unit": "units"
+      }
+    },
+    {
+      "kind": "duplicate",
+      "original": {
+        "product_id": "P01",
+        "week_start": "2024-12-16",
+        "quantity_sold": 12,
+        "unit": "units"
+      }
+    },
+    {
+      "kind": "valid_zero_for_testing",
+      "original": {
+        "product_id": "P01",
+        "week_start": "2025-02-24",
+        "quantity_sold": 25,
+        "unit": "units"
+      },
+      "changed_value": 0
+    }
+  ]
+}

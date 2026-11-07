@@ -1,0 +1,6 @@
+product_id,product_name,base_units,trend_units_per_week,seasonal_amplitude,peak_week_in_cycle,noise_sd
+P01,"Telt, 2 personer",24,0.08,15,25,3
+P02,"Sovepose, 3 sesonger",35,0.1,18,24,4
+P03,"Tursekk, 45 liter",42,0.12,16,23,5
+P04,"Liggeunderlag, oppblaasbart",30,0.09,17,26,4
+P05,"Hodelykt, LED",48,0.06,22,47,6
