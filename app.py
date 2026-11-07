@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 from sales_data import validate_csv
 from forecasting import forecast, evaluate
+from scenarios import calculate_scenarios
 
 st.set_page_config(page_title="Friluft – etterspørselsplanlegging", page_icon="🏕️")
 
@@ -91,3 +92,26 @@ else:
             observations = pd.DataFrame(details)
             observations["Dato"] = observations["Uke i historikken"].map(lambda week: history.week_start.iloc[week - 1])
             st.dataframe(observations, hide_index=True)
+
+    st.subheader("Scenarioer og sikkerhetsmargin")
+    st.caption("Planleggingsantakelser, ikke statistiske konfidens- eller prediksjonsintervaller. Sikkerhetsmargin er et tillegg til mengden, ikke beregnet sikkerhetslager.")
+    method = st.selectbox("Prognosemetode for scenarioer", list(forecast_values), key="scenario_method")
+    high_pct = st.number_input("Høy etterspørsel – økning (%)", min_value=0.0, max_value=1000.0, value=10.0, step=1.0, key="high_pct")
+    low_pct = st.number_input("Lav etterspørsel – reduksjon (%)", min_value=0.0, max_value=100.0, value=10.0, step=1.0, key="low_pct")
+    selected_scenario = st.selectbox("Scenario for planlagt mengde", ["Normal", "Høy", "Lav"], key="selected_scenario")
+    margin_pct = st.number_input("Separat sikkerhetsmargin (%)", min_value=0.0, max_value=1000.0, value=0.0, step=1.0, key="margin_pct")
+    st.caption("Prosentvalgene beholdes ved produktbytte og beregnes på nytt for valgt produkt. Ingen godkjenning eller permanent lagring utføres her.")
+    scenarios = calculate_scenarios(forecast_values[method], high_pct, low_pct, margin_pct)
+    scenario_table = pd.DataFrame({
+        "Uke": future_dates,
+        "Normal (stykk)": scenarios["Normal"]["scenario"],
+        "Høy (stykk)": scenarios["Høy"]["scenario"],
+        "Lav (stykk)": scenarios["Lav"]["scenario"],
+        "Valgt scenario (stykk)": scenarios[selected_scenario]["scenario"],
+        "Sikkerhetsmargin (stykk)": scenarios[selected_scenario]["margin"],
+        "Planlagt mengde (stykk)": scenarios[selected_scenario]["planned"],
+    })
+    st.write(f"{product_names[selected_product]} · {method} · {selected_scenario}. Høy: +{high_pct:g} %, lav: −{low_pct:g} %, separat margin: +{margin_pct:g} %.")
+    st.caption("Normal = prognose. Høy = normal × (1 + økning/100). Lav = normal × (1 − reduksjon/100). Planlagt mengde = valgt scenario × (1 + margin/100). Desimaler beholdes i beregningen; godkjent heltallsmengde kommer i et senere trinn.")
+    st.line_chart(scenario_table.set_index("Uke")[["Normal (stykk)", "Høy (stykk)", "Lav (stykk)", "Planlagt mengde (stykk)"]], x_label="Uke", y_label="Antall (stykk)")
+    st.dataframe(scenario_table, hide_index=True)

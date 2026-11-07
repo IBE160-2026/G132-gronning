@@ -52,6 +52,18 @@ For lengre historikk beholdes disse testvinduene, mens fremtidsprognosen bruker
 hele historikken. MAE måles per produkt i stykk uten heltallsavrunding.
 Ingen av metodene garanterer gode resultater på reelle sesongdata.
 
+## Scenarioer
+
+Velg prognosemetode under «Scenarioer og sikkerhetsmargin». Normal bruker
+punktprognosen; høy og lav starter på henholdsvis +10 % og −10 %.
+Lavjustering kan være 0–100 %, høyjustering og margin 0–1000 %.
+Velg et scenario og legg eventuelt til en separat margin (standard 0 %).
+Eksempel: prognose 100, høy +20 % og margin +10 % gir 120 + 12 = 132.
+Graf og tabell viser antakelser og mengdevirkning. Produktbytte beholder
+prosentvalgene, men beregner verdiene på nytt. Dette er planleggingsantakelser,
+ikke statistiske intervaller eller sikkerhetslager. Verdiene lagres ikke
+permanent og er ennå ikke en godkjent plan eller eksport.
+
 Kjør alle beregnings-, import- og visningstester:
 
 ```powershell
