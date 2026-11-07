@@ -25,6 +25,12 @@ class SalesViewTest(unittest.TestCase):
                 self.assertTrue(displayed.iloc[:, 0].is_monotonic_increasing)
                 self.assertEqual(displayed.iloc[:, 1].tolist(), expected.quantity_sold.tolist())
                 self.assertEqual(int(app.metric[0].value.replace(' ', '')), int(expected.quantity_sold.sum()))
+                future = app.dataframe[1].value
+                self.assertEqual(len(future), 12)
+                self.assertEqual(len(future.columns), 4)
+                self.assertEqual(future.iloc[0, 0], pd.Timestamp(expected.week_start.iloc[-1]) + pd.Timedelta(weeks=1))
+                self.assertEqual(len(app.dataframe[2].value), 6)
+                self.assertEqual(len(app.dataframe[3].value), 3)
 
 
 if __name__ == '__main__':
