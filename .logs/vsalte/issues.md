@@ -5,7 +5,7 @@
 - [x] 2026-11-07 — Implementer CSV-opplasting og datavalidering etter salgshistorikkvisningen.
 
 - [x] 2026-11-07 — Implementer prognoser og MAE-sammenligning. (løst 2026-11-07)
-- [ ] 2026-11-07 — Permanent import, originaldata og begrunnede rettelser gjenstår.
+- [x] 2026-11-07 — Permanent lagring av gyldig import, originaldata og begrunnede mengderettelser implementert (løst 2026-11-07).
 
 - [x] 2026-11-07 — Scenarioer og margin implementert (løst 2026-11-07); eksport føres separat.
 - [ ] 2026-11-07 — Innlogging og sporbar godkjenning gjenstår.
