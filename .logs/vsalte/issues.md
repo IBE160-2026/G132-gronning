@@ -7,6 +7,8 @@
 - [x] 2026-11-07 — Implementer prognoser og MAE-sammenligning. (løst 2026-11-07)
 - [ ] 2026-11-07 — Permanent import, originaldata og begrunnede rettelser gjenstår.
 
-- [ ] 2026-11-07 — Scenarioer, margin og eksport gjenstår.
+- [x] 2026-11-07 — Scenarioer og margin implementert (løst 2026-11-07); eksport føres separat.
 - [ ] 2026-11-07 — Innlogging og sporbar godkjenning gjenstår.
 - [ ] 2026-11-07 — Bekreft fagkrav om KI i appen etter brukerens utsettelse av regresjon.
+
+- [ ] 2026-11-07 — CSV-eksport av planen gjenstår.
