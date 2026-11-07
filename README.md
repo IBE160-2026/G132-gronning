@@ -21,6 +21,13 @@ python -m venv .venv
 Åpne adressen som vises i terminalen, vanligvis http://localhost:8501.
 Stopp serveren med `Ctrl+C`. Ved neste oppstart trenger du bare den siste kommandoen.
 
-Første versjon viser en norsk startside. Dataimport, produktvelger og prognoser
-er ennå ikke implementert. Eksempeldataene i `data/synthetic/` er konstruerte
+Appen viser en produktvelger, salgsgraf, tabell og total solgt mengde for fem
+friluftsprodukter over 104 uker. CSV-opplasting og prognoser er ennå ikke
+implementert. Eksempeldataene i `data/synthetic/` er konstruerte
 øvingsdata, ikke faktisk salgshistorikk fra en bedrift.
+
+Kjør kontrollen av produktvelger og salgshistorikk:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
