@@ -12,4 +12,5 @@
 - [ ] 2026-11-07 — Bekreft fagkrav om KI i appen etter brukerens utsettelse av regresjon.
 
 - [ ] 2026-11-07 — CSV-eksport av planen gjenstår.
-- [ ] 2026-11-07 — Avklar samlet designforslag før implementasjon i Streamlit. [Gjennomgang 14. november](../../outputs/designforslag/designgjennomgang.md) er klar for brukerens vurdering.
+- [x] 2026-11-07 — Avklar samlet designforslag før implementasjon i Streamlit. [Gjennomgang 14. november](../../outputs/designforslag/designgjennomgang.md) godkjent med «gjør anbefalingen»; arbeidsflaten implementert og testet (løst 2026-11-14).
+- [ ] 2026-11-14 [Samlet arbeidsflate](998-2026-11-14-12-22-18-designgjennomgang.md) — Visuell kontroll på smal skjerm og i lyst/mørkt tema gjenstår; nettlesertilgangen var blokkert i implementasjonsøkten.
