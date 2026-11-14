@@ -2,7 +2,7 @@
 title: "Prosjektplan – Forecasting and Demand Management"
 status: draft
 created: 2026-09-23
-updated: 2026-11-07
+updated: 2026-11-14
 deadline_week: 2026-W51
 capacity_hours_per_week: 4
 ---
@@ -14,6 +14,8 @@ capacity_hours_per_week: 4
 Planen følger [produktbriefen](brief.md), [addendum](../addendum.md) og brukerens valg av SCM200 våren 2026 som faglig grunnlag for prognosene. Seks uker à fire timer gir et planleggingsbudsjett på omtrent 24 timer; faktisk tidsbruk er ikke registrert her og må føres separat. Ferdigstillelse av hele MVP-en er fortsatt usikker innen denne kapasiteten.
 
 ## Faglig grunnlag og omfang
+
+**Beslutning 14. november 2026: Første versjon skal ikke ha KI-funksjonalitet i appen.** V1 bruker klassiske prognosemetoder og regelbasert datakontroll. KI-/ML-prognoser, inkludert regresjon, og eventuelle språkmodellforklaringer er videreutvikling etter v1. KI-støtte under utvikling og dokumentasjon holdes atskilt fra appens funksjoner. Dette fastslår prosjektets omfang uten å påstå faglærers godkjenning.
 
 [Emnebeskrivelsen for SCM200 våren 2026](https://www.himolde.no/studier/emner/log/2026/var/scm200.html) nevner glidende gjennomsnitt, eksponensiell glatting og evaluering av prognoser gjennom måltall. Vi bruker MA(4), enkel glatting med alfa 0,3 og sesongnaiv referanse med periode 52. MAE, parameterverdiene og 12 ukers horisont er prosjektvalg, ikke bekreftede krav fra pensumboken. Regresjon er utsatt etter brukerens beslutning. Utviklingen er KI-assistert; prognosemetodene er klassiske statistiske metoder.
 

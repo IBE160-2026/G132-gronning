@@ -1,13 +1,15 @@
 ---
-title: "Product Brief: AI-supported MRP II – Forecasting and Demand Management"
+title: "Product Brief: Forecasting and Demand Management – MRP II"
 status: draft
 created: 2026-09-22
-updated: 2026-11-07
+updated: 2026-11-14
 ---
 
-# Product Brief: AI-supported MRP II
+# Product Brief: Forecasting and Demand Management – MRP II
 
 ## Executive summary
+
+**First-release decision, 14 November 2026: v1 will contain no AI functionality in the application.** Forecasting uses classical statistical methods and data-quality warnings use explicit rules. AI/ML forecasting and language-model features belong to future development after v1 and are not requirements for delivering the first release. AI assistance during software development is separate from functionality delivered to the app's users.
 
 A web-based student prototype will help a demand planner import weekly sales, review data quality, compare forecasts, explore scenarios, and approve and export a demand plan. The first release covers **module 4.1: Forecasting and Demand Management** for one fictional manufacturing company. MRP II remains the long-term vision; other planning modules are outside v1.
 
@@ -27,7 +29,7 @@ The main workspace provides a product selector, a chart of history and the three
 
 The forecasting foundation is [SCM200, spring 2026](https://www.himolde.no/studier/emner/log/2026/var/scm200.html), whose learning outcomes name moving averages and exponential smoothing and evaluating forecasts through metrics. V1 uses a four-week moving average and simple exponential smoothing with alpha 0.3, initial level equal to the first observation. Both produce flat fixed-origin 12-week forecasts. A seasonal naive method with period 52 is retained as a reference for seasonal data. These fixed parameters and MAE are project choices, not verified prescriptions from the course textbook.
 
-At the user's direction, these classical statistical methods replace the regression candidate in v1; regression is deferred. No trained ML model, automatic tuning, language model or paid API is required. AI is used for development, while the application's forecasts remain inspectable classical calculations. This changes the earlier AI-candidate scope and does not claim instructor approval of that change. All methods run locally; warnings use explicit validation rules.
+At the user's direction, classical statistical methods replace the earlier AI/ML candidate in v1. V1 excludes trained ML models, AI-based method selection or anomaly detection, language models, and AI API calls. All methods run locally; warnings use explicit validation rules. AI may assist development and documentation, while the application's forecasts remain inspectable classical calculations. This is the project's decided scope; it does not claim instructor approval of the change from the earlier feedback.
 ## First-release scope
 
 | Area | V1 commitment |
@@ -35,6 +37,7 @@ At the user's direction, these classical statistical methods replace the regress
 | Data | CSV sales history only: product ID, week start, quantity sold, unit. Five synthetic products, 104 weekly observations per product, and a 12-week forecast horizon. |
 | Data quality | Validate fields, weekly coverage, duplicates, missing values, negative quantities, and rule-based outlier warnings. Preserve zero sales. Unresolved blocking errors prevent forecasting. |
 | Forecasts | Four-week moving average, simple exponential smoothing and seasonal naive reference; history, forecasts, and MAE displayed per product. No automatic tuning or method selection. |
+| AI boundary | No AI functionality in v1. AI/ML forecast candidates and language-model explanations are future development, outside first-release acceptance. AI-assisted software development remains allowed. |
 | Scenarios | Normal = selected forecast; optimistic = normal × 1.10; pessimistic = normal × 0.90. Display these as editable planning assumptions, not confidence intervals. |
 | Decisions | Select method and scenario; optionally apply a separately displayed percentage safety margin, default 0%, and explained quantity overrides. Quantities cannot be negative. Safety-stock calculation is outside v1. |
 | Approval and export | Save an immutable approval snapshot linking the imported data and corrections, method, scenario, margin, overrides, approver, and timestamp. Export product, week, unit, scenario, and approved quantity. Full edit-history tracking is deferred. |
@@ -46,6 +49,8 @@ Dataset construction, evaluation windows, and calculation rules are specified in
 
 ## Success criteria
 
+- V1 runs without AI models, language-model services or AI API credentials. Its forecasting and data-quality features use the classical methods and explicit validation rules specified above.
+
 - A planner completes login, import, anomaly review, forecast comparison, scenario adjustment, approval, and export using the supplied demonstration data without code changes.
 - A reproducible generator produces five products × 104 weeks with documented trend, 52-week seasonality, and a fixed random seed. A clean reference and an intentionally corrupted import fixture expose known missing values, outliers, and invalid rows. Tests check known data defects and hand-calculated baseline/MAE examples. The generating process is known; future random demand is not perfectly predictable.
 - All three methods use the same historical 12-week evaluation windows and available observations. Training and any missing-value treatment use only information available at each forecast origin. MAE is shown per product, with results reported even when a method performs worse. See the local evaluation protocol in the addendum.
@@ -55,11 +60,17 @@ Dataset construction, evaluation windows, and calculation rules are specified in
 
 ## Boundaries, risks, and next steps
 
+### Future development after v1: AI/ML
+
+A later version may add a trained regression model with trend and seasonal features as an additional forecast method. It would be compared with the classical methods on the same historical windows using MAE, without future-data leakage, and results would be reported even if the model performs worse. Optional language-model explanations may be considered separately. These are roadmap possibilities, not first-release commitments; model choice, value, evaluation data and any service costs must be specified before implementation.
+
+### Remaining v1 work and other extensions
+
 Customer orders, campaign and market signals, additional roles, full change-history tracking, additional models, and optional language-model explanations are later extensions. BOM editing, MPS, MRP, inventory management, capacity planning, detailed scheduling, finance, ERP/supplier integrations, and purchasing/selling are outside v1. Exported demand may feed future MPS and MRP modules; this prototype does not calculate material or capacity requirements.
 
 The main risks are scope exceeding the remaining time, leakage of future data into evaluation, and synthetic results being mistaken for real-world evidence. Mitigations are the bounded core workflow, fixed temporal tests, human approval, and clearly labelled demonstration data. Synthetic raw data can be version controlled in `data/synthetic/`; secrets and any future sensitive business data must stay outside version control and public logs.
 
-Next, create the dataset fixtures and PRD from these commitments, document the user-directed replacement of regression with SCM200 methods and confirm any course-specific application-AI requirements, and validate the workflow with a prospective planner. The named real company and external dataset are no longer prerequisites. The [project plan](prosjektplan.md) reflects this scope reduction and starts with a check of actual implementation status and remaining capacity. The revised brief governs v1 scope.
+Next, complete the remaining v1 planning and implementation from these commitments and validate the workflow with a prospective planner. The decision to exclude AI from v1 is settled; any course-related discussion records this scope decision rather than leaving the feature choice open. The named real company and external dataset are no longer prerequisites. The [project plan](prosjektplan.md) reflects the reduced v1. The revised brief governs v1 scope.
 
 ## Capacity and course boundary
 

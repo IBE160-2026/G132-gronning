@@ -1,17 +1,19 @@
 ---
-title: "Module Details: AI-supported MRP II"
+title: "Module Details: Forecasting and Demand Management – MRP II"
 status: draft
 created: 2026-09-22
-updated: 2026-11-07
+updated: 2026-11-14
 ---
 
 # Module details and input to the PRD
 
 ## Original user input and scope decision
 
+V1 explicitly contains no AI functionality. This is the scope decision of 14 November 2026.
+
 The original concept was a comprehensive project in which AI supports production planning from demand forecasting to detailed production scheduling. Students learn how data flows between modules and evaluate AI decision support. Authentication is required. Module 4.1 originally included historical sales, seasonality/trend signals, campaigns/market data, customer orders, and sales forecasts; outputs included demand forecasts and three scenarios. Decision points were method, safety margin, and outlier treatment.
 
-The 2026-11-07 revision applies the [instructor feedback](forecaster%20demand/tilbakemelding-product-brief.md). The [revised brief](forecaster%20demand/brief.md) governs v1: sales history only, moving average, simple exponential smoothing and a seasonal naive reference, and one planner role. Orders and market signals, administrator/read-only roles, automatic method selection, and full edit-history tracking are deferred. This supersedes the broader earlier proposals while preserving the original product vision.
+The 2026-11-07 revision applies the [instructor feedback](forecaster%20demand/tilbakemelding-product-brief.md); the 2026-11-14 scope decision excludes AI functionality from v1. The [revised brief](forecaster%20demand/brief.md) governs v1: sales history only, moving average, simple exponential smoothing and a seasonal naive reference, and one planner role. Orders and market signals, administrator/read-only roles, automatic method selection, and full edit-history tracking are deferred. This supersedes the broader earlier proposals while preserving the original product vision.
 
 ## V1 data flow and screen outline
 
@@ -61,9 +63,11 @@ One authenticated planner can use the workflow. Enforce authentication on the se
 
 ## Later stages and remaining questions
 
+A later version may add a trained regression model with trend and seasonal features, evaluated against the classical methods using the same historical windows and MAE without future-data leakage. Any language-model explanations are a separate future option. Neither is part of first-release acceptance. AI assistance in software development does not change this application boundary.
+
 Orders and campaigns require separate input contracts and rules that prevent double-counting orders and forecast demand. Additional roles, richer version history, language-model explanations, and additional models come after the core flow is stable. MPS, BOM/MRP, capacity, scheduling, finance, and supplier integrations remain future modules.
 
-Before implementation tasks are generated, confirm any course-specific requirement for AI within the app after the user-directed deferral of regression, agree who will try the workflow, and choose authentication details and tested dependency versions. The revised [project plan](forecaster%20demand/prosjektplan.md) follows the reduced v1 and requires a check of actual progress and remaining capacity before its estimates are confirmed.
+The no-AI boundary for v1 is decided. Instructor approval of the changed scope is not asserted; any course-related discussion must refer to the explicit decision in the brief. Agree who will try the workflow and choose authentication details and tested dependency versions for the remaining v1 work. The revised [project plan](forecaster%20demand/prosjektplan.md) follows the reduced v1 and requires a check of actual progress and remaining capacity before its estimates are confirmed.
 
 ## Verified course basis and parameter choices
 
