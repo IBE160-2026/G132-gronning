@@ -9,7 +9,7 @@
 
 - [x] 2026-11-07 — Scenarioer og margin implementert (løst 2026-11-07); eksport føres separat.
 - [ ] 2026-11-07 — Innlogging og sporbar godkjenning gjenstår.
-- [ ] 2026-11-07 — Bekreft fagkrav om KI i appen etter brukerens utsettelse av regresjon.
+- [x] 2026-11-07 — Avklar KI-omfang i appen etter brukerens utsettelse av regresjon. Brukeren fastslår ingen KI-funksjonalitet i v1; KI/ML er videreutvikling i brief og prosjektplan. Dette påstår ikke faglærers godkjenning (løst 2026-11-14).
 
 - [ ] 2026-11-07 — CSV-eksport av planen gjenstår.
 - [x] 2026-11-07 — Avklar samlet designforslag før implementasjon i Streamlit. [Gjennomgang 14. november](../../outputs/designforslag/designgjennomgang.md) godkjent med «gjør anbefalingen»; arbeidsflaten implementert og testet (løst 2026-11-14).
