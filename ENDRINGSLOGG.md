@@ -695,3 +695,21 @@ Utfyllende begrunnelser og arbeidsøkter finnes i .logs/vsalte/; gjenstående ar
 ## Designprototype med fargetema
 
 `outputs/designforslag/samlet-oversikt.html` viser et samlet, interaktivt designforslag med illustrative tall. Fargetema kan settes til lyst, mørkt eller systemets valg, og huskes lokalt i nettleseren når lokal lagring er tilgjengelig. Dette er en selvstendig prototype, ikke en endring av Streamlit-appen. Finn commit med `git log --oneline -- outputs/designforslag/samlet-oversikt.html`.
+
+## 14. november 2026 – samlet arbeidsflate i Streamlit
+
+Designretningen er godkjent og overført til `app.py`: produkt- og metodevalg
+øverst, felles graf for historikk/prognose/scenario/plan, justeringer ved
+siden av grafen, faktisk holdout-MAE og full 12-ukerstabell under.
+Import og versjonshåndtering, beregningsdetaljer og full salgshistorikk
+ligger i utvidbare felt. Aktiv kilde og importfeil er fortsatt synlige.
+Kort historikk vises selv når prognoser eller evaluering ikke er tilgjengelig.
+
+Beregningsregler og databaseformat er uendret. `requirements.txt` fører
+Altair som direkte avhengighet. UI-testene kontrollerer faktisk grafdata,
+MAE, scenarioer, kort historikk, importfeil og gjenåpning av rettede data.
+Alle 19 tester bestod etter kodegjennomgangens rettelser; `git diff --check` bestod.
+Spec og gjennomgang: `_bmad-output/implementation-artifacts/spec-samlet-arbeidsflate.md`
+og `outputs/designforslag/designgjennomgang.md`. Visuell kontroll på smal
+skjerm og i begge temaer gjenstår på grunn av blokkert nettlesertilgang.
+Finn commit med `git log --oneline -- app.py`.

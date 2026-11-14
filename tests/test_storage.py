@@ -56,11 +56,11 @@ class StorageTest(unittest.TestCase):
             next(t for t in app.text_input if t.label == 'Begrunnelse for rettelsen').set_value('Kontrollert rettelse')
             next(b for b in app.button if b.label == 'Lagre rettelse som ny versjon').click().run()
             self.assertFalse(app.exception)
-            self.assertEqual(app.dataframe[0].value.iloc[0, 1], 123)
+            self.assertEqual(next(f.value for f in app.dataframe if 'Antall solgt (stykk)' in f.value).iloc[0, 1], 123)
             reopened = AppTest.from_file(str(ROOT / 'app.py')).run()
             next(b for b in reopened.button if b.label == 'Åpne valgt versjon').click().run()
             self.assertFalse(reopened.exception)
-            self.assertEqual(reopened.dataframe[0].value.iloc[0, 1], 123)
+            self.assertEqual(next(f.value for f in reopened.dataframe if 'Antall solgt (stykk)' in f.value).iloc[0, 1], 123)
 
     def test_uploaded_bytes_and_precedence(self):
         with TemporaryDirectory() as directory, patch.dict('os.environ', {'FORECAST_DB_PATH': str(Path(directory) / 'test.sqlite3')}):
@@ -77,8 +77,8 @@ class StorageTest(unittest.TestCase):
                 app.run()
                 app.selectbox(key='saved_version').select(correction)
                 next(b for b in app.button if b.label == 'Åpne valgt versjon').click().run()
-                self.assertEqual(app.dataframe[0].value.iloc[0, 1], 10)
+                self.assertEqual(next(f.value for f in app.dataframe if 'Antall solgt (stykk)' in f.value).iloc[0, 1], 10)
             with patch('streamlit.file_uploader', return_value=None):
                 app.run()
                 self.assertFalse(app.exception)
-                self.assertEqual(app.dataframe[0].value.iloc[0, 1], 99)
+                self.assertEqual(next(f.value for f in app.dataframe if 'Antall solgt (stykk)' in f.value).iloc[0, 1], 99)

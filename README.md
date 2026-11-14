@@ -29,6 +29,22 @@ friluftsprodukter over 104 uker. Du kan også laste opp egen CSV og sammenligne
 tre prognosemetoder med historisk MAE. Eksempeldataene i `data/synthetic/` er konstruerte
 øvingsdata, ikke faktisk salgshistorikk fra en bedrift.
 
+Arbeidsflaten samler produkt- og metodevalg øverst. Hovedgrafen viser siste
+24 historikkuker, valgt prognose, lav–høy scenario uten margin og plan med
+margin for de neste 12 ukene. Juster scenario og prosenter ved siden av grafen;
+tabellen viser alle 12 planuker. Holdout-MAE beregnes for valgt produkt og
+vises separat fra utviklingsvinduene. Kort historikk gir forklaring når
+prognoser eller evaluering ikke kan beregnes.
+
+«Datagrunnlag og import» samler opplasting, lagring og rettelser. Aktiv
+datakilde og importfeil vises utenfor det sammenfoldede feltet.
+«Alle beregninger og testvinduer» viser alle tre prognoser, formler og feil
+bak MAE; «Hele salgshistorikken» viser alle uker og salgssummen.
+Total planlagt mengde og planrader vises med én desimal; beregningene bruker
+uavrundede verdier, så summen av avrundede rader kan avvike fra vist total.
+Appen bruker Streamlits tema, som velges under menyen øverst til høyre →
+Settings → Theme. Kolonnene stables på smal skjerm.
+
 CSV-opplasting krever UTF-8, komma og kolonnene i denne rekkefølgen:
 `product_id,week_start,quantity_sold,unit`. Dato er mandag i format
 `YYYY-MM-DD` mellom 1900 og 2100, mengde et heltall fra 0 til 1000000000,
@@ -76,7 +92,7 @@ Ingen av metodene garanterer gode resultater på reelle sesongdata.
 
 ## Scenarioer
 
-Velg prognosemetode under «Scenarioer og sikkerhetsmargin». Normal bruker
+Velg prognosemetode øverst i arbeidsflaten og scenario under «Juster planen». Normal bruker
 punktprognosen; høy og lav starter på henholdsvis +10 % og −10 %.
 Lavjustering kan være 0–100 %, høyjustering og margin 0–1000 %.
 Velg et scenario og legg eventuelt til en separat margin (standard 0 %).
