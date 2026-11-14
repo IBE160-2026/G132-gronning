@@ -12,4 +12,4 @@
 - [ ] 2026-11-07 — Bekreft fagkrav om KI i appen etter brukerens utsettelse av regresjon.
 
 - [ ] 2026-11-07 — CSV-eksport av planen gjenstår.
-- [ ] 2026-11-07 — Avklar samlet designforslag før implementasjon i Streamlit.
+- [ ] 2026-11-07 — Avklar samlet designforslag før implementasjon i Streamlit. [Gjennomgang 14. november](../../outputs/designforslag/designgjennomgang.md) er klar for brukerens vurdering.
